@@ -213,7 +213,12 @@ jobs:
       env:
         PREBUILDS_ONLY: 1
 
+    - run: npm pack --tag ${{ github.event.inputs.npm_tag }}
+      if: ${{ inputs.dry_run }}
+      working-directory: node
+
     - run: npm publish --tag ${{ github.event.inputs.npm_tag }} --access public ${{ inputs.dry_run && '--dry-run' || ''}}
+      if: ${{ !inputs.dry_run }}
       working-directory: node
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -226,3 +231,9 @@ jobs:
         allowUpdates: true
         artifactErrorsFailBuild: true
         artifacts: debuginfo/*-debuginfo.*
+    
+    - name: Upload pack
+      uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
+      with:
+        name: pack
+        path: node/*.tgz

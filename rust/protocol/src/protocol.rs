@@ -456,7 +456,7 @@ impl SenderKeyMessage {
         signature_key: &PrivateKey,
     ) -> Result<Self> {
         let proto_message = proto::wire::SenderKeyMessage {
-            distribution_uuid: Some(distribution_id.as_bytes().to_vec()),
+            // distribution_uuid: Some(distribution_id.as_bytes().to_vec()),
             chain_id: Some(chain_id),
             iteration: Some(iteration),
             ciphertext: Some(ciphertext.to_vec()),
@@ -547,10 +547,7 @@ impl TryFrom<&[u8]> for SenderKeyMessage {
             proto::wire::SenderKeyMessage::decode(&value[1..value.len() - Self::SIGNATURE_LEN])
                 .map_err(|_| SignalProtocolError::InvalidProtobufEncoding)?;
 
-        let distribution_id = proto_structure
-            .distribution_uuid
-            .and_then(|bytes| Uuid::from_slice(bytes.as_slice()).ok())
-            .ok_or(SignalProtocolError::InvalidProtobufEncoding)?;
+        let distribution_id = Uuid::nil();
         let chain_id = proto_structure
             .chain_id
             .ok_or(SignalProtocolError::InvalidProtobufEncoding)?;
@@ -594,7 +591,7 @@ impl SenderKeyDistributionMessage {
         signing_key: PublicKey,
     ) -> Result<Self> {
         let proto_message = proto::wire::SenderKeyDistributionMessage {
-            distribution_uuid: Some(distribution_id.as_bytes().to_vec()),
+            // distribution_uuid: Some(distribution_id.as_bytes().to_vec()),
             chain_id: Some(chain_id),
             iteration: Some(iteration),
             chain_key: Some(chain_key.clone()),
@@ -684,10 +681,7 @@ impl TryFrom<&[u8]> for SenderKeyDistributionMessage {
         let proto_structure = proto::wire::SenderKeyDistributionMessage::decode(&value[1..])
             .map_err(|_| SignalProtocolError::InvalidProtobufEncoding)?;
 
-        let distribution_id = proto_structure
-            .distribution_uuid
-            .and_then(|bytes| Uuid::from_slice(bytes.as_slice()).ok())
-            .ok_or(SignalProtocolError::InvalidProtobufEncoding)?;
+        let distribution_id = Uuid::nil();
         let chain_id = proto_structure
             .chain_id
             .ok_or(SignalProtocolError::InvalidProtobufEncoding)?;
