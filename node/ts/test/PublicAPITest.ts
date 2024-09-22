@@ -647,7 +647,7 @@ describe('SignalClient', () => {
   describe('SenderKeyDistributionMessage Store API', () => {
     it('can encrypt and decrypt', async () => {
       const sender = SignalClient.ProtocolAddress.new('sender', 1);
-      const distributionId = 'd1d1d1d1-7000-11eb-b32a-33b8a8a487a6';
+      const distributionId = '00000000-0000-0000-0000-000000000000';
       const aSenderKeyStore = new InMemorySenderKeyStore();
       const skdm = await SignalClient.SenderKeyDistributionMessage.create(
         sender,
@@ -1596,7 +1596,7 @@ describe('SignalClient', () => {
 
       const aAddress = SignalClient.ProtocolAddress.new(aUuid, aDeviceId);
 
-      const distributionId = 'd1d1d1d1-7000-11eb-b32a-33b8a8a487a6';
+      const distributionId = '00000000-0000-0000-0000-000000000000';
       const aSenderKeyStore = new InMemorySenderKeyStore();
       const skdm = await SignalClient.SenderKeyDistributionMessage.create(
         aAddress,
